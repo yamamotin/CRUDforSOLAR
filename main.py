@@ -1,5 +1,7 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 from datetime import date
+import officepack
+from officepack import printExcel
 
 from flask.wrappers import Response
 from flask_sqlalchemy import SQLAlchemy
@@ -34,6 +36,7 @@ def index():
 @app.route("/status")
 def home():
     dados = User.query.filter_by(monitorando=False)
+    printExcel()
     return render_template('index.html', dados=dados)
 
 @app.route("/novo", methods=['POST','GET'])
