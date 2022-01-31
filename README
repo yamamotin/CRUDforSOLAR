@@ -1,0 +1,5 @@
+#initialize DB with
+  python3 startdb.py
+  
+#initialize server with
+  ./startserver
