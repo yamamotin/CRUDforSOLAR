@@ -33,7 +33,7 @@ def index():
 
 @app.route("/status")
 def home():
-    dados = User.query.filter_by(monitorando=True)
+    dados = User.query.filter_by(monitorando=False)
     return render_template('index.html', dados=dados)
 
 @app.route("/novo", methods=['POST','GET'])
@@ -70,6 +70,9 @@ def atualizar(id):
         dados = User.query.filter_by(_id=id).all()
         return render_template('atualizar.html', dados=dados)
 
-'''
-def deletar():
-'''
+@app.route("/deletar/<int:id>")
+def deletar(id):
+    usuarioobj = User.query.filter_by(_id=id).first()
+    db.session.delete(usuarioobj)
+    db.session.commit()    
+    return redirect(url_for('index'))
