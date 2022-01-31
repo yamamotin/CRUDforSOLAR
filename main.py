@@ -57,22 +57,14 @@ def novo():
 @app.route("/atualizar/<int:id>", methods=['POST','GET'])
 def atualizar(id):
     if request.method == 'POST':
-        nome = request.form['nome']
-        adress = request.form['endereco']
-        city = request.form['cidade']
-        cep_cliente = request.form['cep']
-        tel = request.form['telefone']
-        kilowp = request.form['kwp']
-        inv = request.form['inv']
-        placa = request.form['placa']
-        monitor = request.form['monitor']
-        if monitor == 'on':
-            monitor = True
-        else:
-            monitor = False
-        inserir = User.query.filter_by(_id=id).update(nome_do_cliente=nome,endereco=adress,cep=cep_cliente,telefone=tel,kwp=kilowp,marca_do_inversor=inv,marca_da_placa=placa,monitorando=monitor)
-        db.session.add(inserir)
-        db.session.commit()
+        usuarioobj = User.query.filter_by(_id=id).first()
+        try:
+            monitor = request.form['monitor']
+            usuarioobj.monitorando = True
+        except:
+            usuarioobj.monitorando = False                    
+        db.session.add(usuarioobj)
+        db.session.commit()    
         return render_template('index.html')
     else:
         dados = User.query.filter_by(_id=id).all()
