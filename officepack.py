@@ -1,7 +1,9 @@
 import sqlite3 as sql
 import os
 import csv
+
 from sqlite3 import Error
+from openpyxl import Workbook, load_workbook
 
 def printExcel():
   try:
@@ -27,3 +29,9 @@ def printExcel():
   # Close database connection
   finally:
     conn.close()
+
+'''def impOrc(id):
+  planilha = load_workbook("Planilha modelo.xlsx")
+  aba_ativa = planilha.active
+  cursor = User.query.filter_by(_id=id).all()
+  return '''

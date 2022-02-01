@@ -1,8 +1,6 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 from datetime import date
-import officepack
 from officepack import printExcel
-
 from flask.wrappers import Response
 from flask_sqlalchemy import SQLAlchemy
 
@@ -24,6 +22,7 @@ class User(db.Model):
     cep = db.Column(db.Integer, unique=False, nullable=False)
     telefone = db.Column(db.Integer, unique=False, nullable=False)
     kwp = db.Column(db.Integer, unique=False, nullable=False)
+    preco = db.Column(db.Integer, unique=False, nullable=False)
     marca_do_inversor = db.Column(db.String(30), unique=False, nullable=True)
     marca_da_placa = db.Column(db.String(16), unique=False, nullable=False)
     monitorando = db.Column(db.Boolean, default=False)
@@ -48,9 +47,10 @@ def novo():
         cep_cliente = request.form['cep']
         tel = request.form['telefone']
         kilowp = request.form['kwp']
+        preco = request.form['preco']
         inv = request.form['inv']
         placa = request.form['placa']
-        inserir = User(data=date,nome_do_cliente=nome,endereco=adress,cep=cep_cliente,cidade=city,telefone=tel,kwp=kilowp,marca_do_inversor=inv,marca_da_placa=placa)
+        inserir = User(data=date,nome_do_cliente=nome,endereco=adress,cep=cep_cliente,cidade=city,telefone=tel,kwp=kilowp,preco=preco,marca_do_inversor=inv,marca_da_placa=placa)
         db.session.add(inserir)
         db.session.commit()
         return redirect(url_for('novo'))
@@ -62,12 +62,15 @@ def atualizar(id):
     if request.method == 'POST':
         usuarioobj = User.query.filter_by(_id=id).first()
         try:
+            preco = request.form['preco']
             monitor = request.form['monitor']
             usuarioobj.monitorando = True
+            usuarioobj.preco = preco
         except:
-            usuarioobj.monitorando = False                    
+            usuarioobj.monitorando = False
+            usuarioobj.preco = preco               
         db.session.add(usuarioobj)
-        db.session.commit()    
+        db.session.commit() 
         return redirect(url_for('index'))
     else:
         dados = User.query.filter_by(_id=id).all()
@@ -79,3 +82,8 @@ def deletar(id):
     db.session.delete(usuarioobj)
     db.session.commit()    
     return redirect(url_for('index'))
+
+'''@app.route("/orcar/<int:id>")
+def orcamentar(id):
+    impOrc()
+    return render_template('index.html')'''

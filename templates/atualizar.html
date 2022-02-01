@@ -11,6 +11,7 @@
 <td>{{ dado.cep }}</td>
 <td>{{ dado.telefone }}</td>
 <td>{{ dado.kwp }}</td>
+<td>{{ dado.preco }}</td>
 <td>{{ dado.marca_do_inversor }}</td>
 <td>{{ dado.marca_da_placa }}</td>
 <td>    {% if dado.monitorando==True %} 
@@ -30,9 +31,11 @@
 <form action="#" method="post">
                 <span> 
                 <input class="form-check-input" type="checkbox" name="monitor">
-                        Em Monitoramento
-                        <div class="col">
-                <input type="submit" name="Send" class="btn btn-primary" aria-hidden="true" value="Atualizar Cadastro ">
+                Em Monitoramento
+                <input type="text" style="max-width: 15rem;" name="preco" class="form-control" placeholder="Preco">
+                <div class="col">
+                    <input type="submit" name="att" class="btn btn-primary" aria-hidden="true" value="Atualizar Cadastro ">
+                    <a href="/orcar/{{dado._id}}"><input type="button" name="orcar" class="btn btn-primary" aria-hidden="true" value="Orcamento"></a>
                 <a href="/deletar/{{dado._id}}"><input type="button" class="btn btn-danger" name="delete" value="Deletar"></a>
             </div>
             </form>
