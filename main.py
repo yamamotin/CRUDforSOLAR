@@ -1,6 +1,6 @@
 from flask import Flask, render_template, request, jsonify, redirect, url_for
 from datetime import date
-from officepack import printExcel
+from officepack import printExcel, impContrato
 from flask.wrappers import Response
 from flask_sqlalchemy import SQLAlchemy
 
@@ -20,6 +20,7 @@ class User(db.Model):
     cidade = db.Column(db.String(30))
     endereco = db.Column(db.String(120), unique=False, nullable=True)
     cep = db.Column(db.Integer, unique=False, nullable=False)
+    cpf = db.Column(db.Integer)
     telefone = db.Column(db.Integer, unique=False, nullable=False)
     kwp = db.Column(db.Integer, unique=False, nullable=False)
     preco = db.Column(db.Integer, unique=False, nullable=False)
@@ -45,14 +46,16 @@ def novo():
         adress = request.form['endereco']
         city = request.form['cidade']
         cep_cliente = request.form['cep']
+        cpf = request.form['cpf']
         tel = request.form['telefone']
         kilowp = request.form['kwp']
         preco = request.form['preco']
         inv = request.form['inv']
         placa = request.form['placa']
-        inserir = User(data=date,nome_do_cliente=nome,endereco=adress,cep=cep_cliente,cidade=city,telefone=tel,kwp=kilowp,preco=preco,marca_do_inversor=inv,marca_da_placa=placa)
+        inserir = User(data=date,nome_do_cliente=nome,endereco=adress,cep=cep_cliente,cpf=cpf,cidade=city,telefone=tel,kwp=kilowp,preco=preco,marca_do_inversor=inv,marca_da_placa=placa)
         db.session.add(inserir)
         db.session.commit()
+        impContrato(nome, adress, city, cpf, kilowp,placa,inv,preco)
         return redirect(url_for('novo'))
     else:
         return render_template('novo.html')
