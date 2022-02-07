@@ -1,12 +1,6 @@
-import sys
-import sqlite3 as sql
-import os
-import csv
 from datetime import date
-from sqlite3 import Error
-from openpyxl import Workbook, load_workbook
 from num2words import num2words
-
+import csv
 from docx import Document
 from docx.shared import Inches
 
